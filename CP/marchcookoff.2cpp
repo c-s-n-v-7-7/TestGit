@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std ;
+
+int main()
+{
+	int t ;
+	cin >> t ;
+	while(t--)
+	{
+		string s ;
+		cin >> s ;
+		int k , x ;
+		cin >> k >> x ;
+		int c[26] = {0} ;
+		int i ;
+			for ( i=0 ; i<s.size() ; i++ )
+			{
+				c[s[i]-97]++ ;
+				if ( c[s[i]-97]>x )
+				{
+					if ( k==0 )	break ;
+					k-- ;
+				}
+			}
+			cout << i+1 << "\n" ;
+  	}
+	return 0 ;
+}

@@ -1,0 +1,76 @@
+import java.util.Scanner ;
+class D{
+    int data ;
+    boolean b = false ;
+        int step , ns ;
+    public D(int a , int b , int c )
+    {
+        data = a ;
+        step = b ;
+        ns = c ;
+    }
+    public synchronized void increase()
+    {
+        if(b) { try{wait() ; } catch(Exception e){} }
+        data += step ;
+        System.out.println("Increment : "+data);
+        b = !b ;
+        notify() ;
+    }
+    public synchronized void decrease()
+    {
+        if(!b)  {try{wait() ;} catch(Exception e){} }
+        data -= ns ;
+        System.out.println("Decreased : "+data) ;
+        b=!b ;
+        notify() ; 
+    }
+}
+
+
+class Producer implements Runnable{
+    D d ;
+    public Producer(D d)
+    {
+        this.d = d ;
+        Thread t = new Thread(this) ;
+        t.start() ;
+    }
+        public void run()
+        {
+            int i=0 ;
+            while(i<10)
+            { d.increase() ; i++ ;}
+        }
+        
+}
+
+class Consumer implements Runnable{
+    D d ;
+    public Consumer(D d)
+    {
+        this.d = d ;
+        Thread t = new Thread(this) ;
+        t.start() ;
+    }
+    public void run()
+    {
+        int i=0 ; 
+        while(i<10)
+        {
+            d.decrease() ; i++ ;
+        }
+    }
+}
+class Main{
+    public static void main(String[] args){
+        int n1,n2,n3 ;
+        Scanner ip = new Scanner(System.in) ;
+        n1 = ip.nextInt() ;
+        n2 = ip.nextInt() ;
+        n3 = ip.nextInt() ;
+        D dat = new D(n1,n2,n3) ;
+        Producer p = new  Producer( dat ) ;
+        Consumer c = new Consumer( dat ) ;
+    } 
+}
